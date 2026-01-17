@@ -1,32 +1,138 @@
-# Cognitive Radar for Target Detection & Tracking
+# Adaptive Sequential Decision System
 
-This repository documents my M.Tech thesis work on cognitive radar systems,
-focused on adaptive target tracking under noisy sensing conditions.
+This project demonstrates **adaptive sequential decision-making under uncertainty**
+using classical state estimation and a lightweight learning-based policy.
 
-## Problem Overview
-Traditional radar systems operate with fixed parameters and struggle in
-non-stationary environments. This work explores a cognitive radar framework
-where sensing and action are coupled through feedback to improve tracking
-accuracy over time.
+The system estimates hidden states from noisy observations and adaptively
+controls sensing quality based on uncertainty and cost trade-offs.
 
-## System Design
-<img width="749" height="503" alt="image" src="https://github.com/user-attachments/assets/a79132b4-7bc8-490c-bf0a-2e827ed16008" />
+---
 
+## Motivation
 
-The system is built around a perception–action cycle:
-- Receiver estimates target state using Bayesian filtering
-- Transmitter adapts waveform parameters based on receiver feedback
-- Feedback loop minimizes tracking error iteratively
+In many real-world systems, the true state of the environment is not directly
+observable. Decisions must be made sequentially using noisy measurements,
+while balancing performance and operational cost.
 
-## Methods Used
-- State-space modeling of target dynamics
-- EKF, UKF, and Cubature Kalman Filter for nonlinear tracking
-- Dynamic optimization of waveform parameters
-- RMSE-based evaluation over multiple iterations
-<img width="900" height="523" alt="image" src="https://github.com/user-attachments/assets/4236980d-4e50-491a-a338-bc2ed7374b94" />
+This project focuses on:
+- Estimating hidden states over time
+- Quantifying uncertainty
+- Using uncertainty to drive adaptive decisions
+- Learning when expensive sensing is justified
 
-## Results
-Experiments demonstrate consistent reduction in tracking error across cycles,
-with Cubature Kalman Filter showing improved stability in highly nonlinear
-conditions.
+---
+
+## Core Concepts
+
+- Partial observability
+- State-space modeling
+- Sequential Bayesian estimation
+- Uncertainty propagation
+- Adaptive sensing and control
+- Learning-based decision policies
+
+---
+
+## System Overview
+
+The system consists of five main components:
+
+### 1. Environment Simulation
+- Simulates a dynamic system with hidden states (position and velocity)
+- Adds process noise to model uncertainty in dynamics
+- Produces noisy, nonlinear observations
+
+### 2. State Estimation (EKF)
+- Uses an Extended Kalman Filter
+- Performs prediction and update steps sequentially
+- Tracks estimation uncertainty via covariance propagation
+
+### 3. Adaptive Decision Logic
+- Chooses between LOW and HIGH quality sensing
+- Balances estimation accuracy against sensing cost
+- Forms a closed feedback loop with the estimator
+
+### 4. Learning Component
+- Trains a lightweight classifier on uncertainty features
+- Learns when high-quality sensing is necessary
+- Generalizes beyond fixed or rule-based strategies
+
+### 5. Deployment Dashboard
+- Interactive Streamlit application
+- Visualizes trajectories, uncertainty, and decisions
+- Includes demo mode for adaptive switching visualization
+
+---
+
+## Project Structure
+
+adaptive_tracking_system/
+│
+├── dashboard/          # Streamlit deployment app
+
+├── simulation/         # Environment & dynamics
+
+├── filters/            # EKF implementation
+
+├── decision/           # Adaptive sensing logic
+
+├── learning/           # Learned policy
+
+├── evaluation/         # Policy comparison & metrics
+
+├── main.py             # Training / inference entry point
+
+├── README.md
+
+└── .gitignore
+
+---
+
+## How to Run
+
+### 1. Install dependencies
+
+pip install numpy scipy scikit-learn matplotlib streamlit
+
+### 2. Run training / inference
+
+python main.py
+
+### 3. Launch dashboard
+
+streamlit run dashboard/app.py
+
+---
+
+## Evaluation
+
+The project supports comparison between:
+- Fixed sensing policy
+- Rule-based adaptive policy
+- Learning-based adaptive policy
+
+Evaluation metrics include:
+- Mean tracking error
+- Uncertainty evolution
+- Total sensing cost
+
+---
+
+## Key Insight
+
+The learned policy does not blindly adapt.
+It increases sensing quality only when uncertainty justifies the additional cost.
+
+In nominal conditions, the system conserves resources while maintaining
+stable tracking performance.
+
+---
+
+## Notes
+
+- Uses simulated data only
+- No real-world or proprietary datasets
+- Designed for ML / Data Science audiences
+- Avoids defense-specific jargon
+
 
